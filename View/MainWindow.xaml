@@ -1,0 +1,85 @@
+﻿<Window x:Class="exam.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:exam"
+        mc:Ignorable="d"
+        Title="Color Viewer" Height="450" Width="600">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries >
+                <ResourceDictionary Source="Themes/ClassicTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" VerticalAlignment="Center">
+            <MenuItem Command="{Binding ChangeThemeCommand}" CommandParameter="Themes/ClassicTheme.xaml" Header="Classic theme"/>
+            <MenuItem Command="{Binding ChangeThemeCommand}" CommandParameter="Themes/ColorfullTheme.xaml" Header="Colorfull theme"/>
+            <MenuItem Command="{Binding ChangeThemeCommand}" CommandParameter="Themes/PastelTheme.xaml" Header="Pastel theme"/>
+        </Menu>
+        
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox IsChecked="True" Name="ACheckbox" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox IsChecked="True" Name="RCheckbox" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox IsChecked="True" Name="GCheckbox" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox IsChecked="True" Name="BCheckbox" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Alpha:"/>
+            <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Red:"/>
+            <Label Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Green:"/>
+            <Label Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Blue:"/>
+
+            <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding ElementName=AlphaSlider, Path=Value}"/>
+            <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding ElementName=RedSlider, Path=Value}"/>
+            <Label Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding ElementName=GreenSlider, Path=Value}"/>
+            <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding ElementName=BlueSlider, Path=Value}"/>
+
+            <Slider Grid.Row="0" Grid.Column="3" x:Name="AlphaSlider" Maximum="255" Minimum="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1"
+                    Value="{Binding CurrentColorA, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding ElementName=ACheckbox, Path=IsChecked}"/>
+            <Slider Grid.Row="1" Grid.Column="3" x:Name="RedSlider" Maximum="255" Minimum="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1"
+                    Value="{Binding CurrentColorR, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding ElementName=RCheckbox, Path=IsChecked}"/>
+            <Slider Grid.Row="2" Grid.Column="3" x:Name="GreenSlider" Maximum="255" Minimum="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1"
+                    Value="{Binding CurrentColorG, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding ElementName=GCheckbox, Path=IsChecked}"/>
+            <Slider Grid.Row="3" Grid.Column="3" x:Name="BlueSlider" Maximum="255" Minimum="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1"
+                    Value="{Binding CurrentColorB, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding ElementName=BCheckbox, Path=IsChecked}"/>
+
+            <Canvas Grid.RowSpan="4" Grid.Column="4" Margin="5" Background="{Binding CurrentColor.ColorString}"/>
+        </Grid>
+
+        <Button Command="{Binding AddColorCommand}" Grid.Row="2" Content="Add" Margin="5" Width="80" HorizontalAlignment="Left"/>
+
+        <ListBox Grid.Row="3" Margin="5" x:Name="ColorListBox" 
+                 ItemTemplate="{StaticResource colorListTemplate}" ItemsSource="{Binding Colors}"
+                 SelectedItem="{Binding SelectedColor}" AlternationCount="999"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+    </Grid>
+</Window>
